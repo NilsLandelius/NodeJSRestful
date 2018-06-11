@@ -1,17 +1,21 @@
 
 const Joi = require('joi');
+const logger = require('./logger');
+const authenticator = require('./authenticator')
 const express = require('express');
 const app = express();
 
 app.use(express.json()); //Needed to process incoming JSON(application/json) messages.
+app.use(logger);
+app.use(authenticator);
 
 // Catagories library
 const catagories = [
-    {id: 1, name:"Drama"},
-    {id: 2, name:"Action"},
-    {id: 3, name:"Romance"},
-    {id: 4, name:"Sci-Fi"},
-    {id: 5, name:"Musical"},
+    {id: 0, name:"Drama"},
+    {id: 1, name:"Action"},
+    {id: 2, name:"Romance"},
+    {id: 3, name:"Sci-Fi"},
+    {id: 4, name:"Musical"},
 ];
 
 //app setup to listen to correct port.
