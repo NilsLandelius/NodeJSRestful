@@ -11,9 +11,7 @@ const catagories = [
     {id: 4, name:"Musical"},
 ];
 
-router.get('/videos', (req,res) =>{
-    res.render("index",{title:"My page",message:"Hello World!"});
-});
+
 
 //get all catagories
 router.get('/', (req,res)=>{

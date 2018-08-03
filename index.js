@@ -5,8 +5,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const logger = require('./middleware/logger');
 const authenticator = require('./middleware/authenticator');
-const router_cata = require('./routers/catagories');
-const router_home = require('./routers/homepage');
+const router_cata = require('./routes/catagories');
+const router_home = require('./routes/homepage');
 const express = require('express');
 const app = express();
 
