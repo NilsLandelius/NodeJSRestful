@@ -17,14 +17,14 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use(helmet());
 app.use('/api/catagories',router_cata);
-app.use('/homepage',router_home)
+app.use('/homepage',router_home);
 
 //Configuration
 console.log("Application Name: " + config.get('name'));
 console.log('Mail Server: ' + config.get('mail.host'));
 console.log('Mail Password: ' + config.get('mail.password'));
 
-if(app.get('env')==='development'){
+if(app.get('env')==='develop'){
     app.use(morgan('tiny'));
     debug('Morgan enabled');
 }
