@@ -1,9 +1,13 @@
 const {Rental, validate} = require('../models/rental'); 
 const {Movie} = require('../models/movie'); 
-const {Customer} = require('../models/customer'); 
+const {Customer} = require('../models/customer');
+const Fawn = require('Fawn'); 
 const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
+
+
+Fawn.init(mongoose);
 
 router.get('/', async (req, res) => {
   const rentals = await Rental.find().sort('-dateOut');
@@ -25,6 +29,7 @@ router.post('/', async (req, res) => {
   let rental = new Rental({ 
     customer: {
       _id: customer._id,
+      isGold: customer.isGold,
       name: customer.name, 
       phone: customer.phone
     },
@@ -34,12 +39,28 @@ router.post('/', async (req, res) => {
       dailyRentalRate: movie.dailyRentalRate
     }
   });
-  rental = await rental.save();
+  /**
+   * Fawn is a library that allows transactions toward the mongoDB.
+   * This means that the Task will either be performed in full or if it fails,
+   * will revert back to before the first operation was performed.
+   * 
+   * It's very handy when you need to do several updates towards the database and you need to make
+   * sure that you fail somewhere in the middle and corrupt your data.
+   */
 
-  movie.numberInStock--;
-  movie.save();
-  
-  res.send(rental);
+  try{
+    new Fawn.Task()
+      .save("rentals", rental)
+      .update("movies",{_id:movie._id},{
+        $inc: {numberInStock: -1}
+      })
+      .run();
+
+    res.send(rental);
+
+  }catch(ex){
+    res.status(500).send("Something went wrong");
+  }    
 });
 
 router.get('/:id', async (req, res) => {
