@@ -1,5 +1,6 @@
 {
     "name":"My express app - development",
+    "jwtPrivateKey":"",
     "mail":{
         "host": "dev-mail-server"
     }
