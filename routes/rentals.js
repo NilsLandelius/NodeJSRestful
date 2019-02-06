@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
    * will revert back to before the first operation was performed.
    * 
    * It's very handy when you need to do several updates towards the database and you need to make
-   * sure that you fail somewhere in the middle and corrupt your data.
+   * sure that you don't fail somewhere in the middle and corrupt your data.
    */
 
   try{
