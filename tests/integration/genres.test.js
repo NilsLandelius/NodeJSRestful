@@ -49,34 +49,63 @@ describe('api/genres',()=>{
         })
     })
         describe('POST /',()=>{
+
+            /**
+             * Refactoring tests, extracting the post of a happy case, then creating variables for the 
+             * token and name properties sent. This will allow for changing the variables inside tests
+             * when needed in order to change the exec-functions call. Then use the beforeEach-function
+             * to reset the name and token variables to acceptable paramters before each test.
+             */
+            let token;
+            let name;
+
+            const exec = async()=>{
+             return await request(server)
+            .post('/api/genres')
+            .set('x-auth-token',token)
+            .send({name:name});
+            }; 
+
+            beforeEach(async ()=>{
+                token = await new User().generateAuthToken();
+                name = 'genre1';
+            });
+
             it('Should return a 401 if client is not logged in',async()=>{
-                const res = await request(server).post('/api/genres').send({genre:'genre1'});
-                
+                token = '';
+                const res = await exec();
                 expect(res.status).toBe(401);
                 
             });
             it('Should return a 400 if genre is less then 5 characters',async()=>{
-                const token = await new User().generateAuthToken();
+                name = '1234';
 
-                const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token',token)
-                .send({genre:'1234'});
+                const res = await exec();
                 
                 expect(res.status).toBe(400);
                 
             });
             it('Should return a 400 if genre is more then 50 characters',async()=>{
-                const token = await new User().generateAuthToken();
-                //The array will be joined into a 51 character long string.
-                const name = new Array(52).join('a');
+                name = new Array(52).join('a');
 
-                const res = await request(server)
-                .post('/api/genres')
-                .set('x-auth-token',token)
-                .send({genre:name});
+                const res = await exec();
                 
                 expect(res.status).toBe(400);
+                
+            });
+            it('Should save the genre if it is valid',async()=>{
+                await exec();
+                
+                const genre = await Genre.find({name:name});
+                expect(genre).not.toBeNull();
+                
+            });
+            it('Should return the genre if it is valid',async()=>{
+
+                const res = await exec();
+                
+                expect(res.body).toHaveProperty('_id');
+                expect(res.body).toHaveProperty('name','genre1');
                 
             });
         });  
