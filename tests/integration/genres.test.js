@@ -1,7 +1,8 @@
 const request = require('supertest');
 const {Genre} = require('../../models/genre');
 const {User} = require('../../models/user');
-let server;
+const mongoose = require('mongoose');
+
 
 describe('api/genres',()=>{
     /**
@@ -12,8 +13,8 @@ describe('api/genres',()=>{
      */
     beforeEach(()=> {server = require('../../index')});
     afterEach(async ()=>{
-        server.close(); 
         await Genre.deleteMany({});
+        server.close(); 
     });
 
         describe('GET /',()=>{
@@ -27,7 +28,7 @@ describe('api/genres',()=>{
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(2);
             expect(res.body.some(g => g.name === "genre1")).toBeTruthy();
-        })
+        });
     });
         describe('GET /:id', ()=>{
         it('Should return a genre if a valid id is passed',async ()=>{
@@ -39,15 +40,14 @@ describe('api/genres',()=>{
             expect(res.status).toBe(200);
             expect(res.body).toHaveProperty('name',genre.name);
 
-        })
+        });
         it('Should return 404 if a invalid id is passed',async ()=>{
-            
-            const res = await request(server).get('/api/genres/w1');
+            const res = await request(server).get('/api/genres/1');
 
             expect(res.status).toBe(404);
 
-        })
-    })
+        });
+    });
         describe('POST /',()=>{
 
             /**

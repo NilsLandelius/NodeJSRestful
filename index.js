@@ -1,5 +1,5 @@
-const winston = require('winston');
 const express = require('express');
+const winston = require('winston');
 const app = express();
 
 // load logging first in case an error during startup process occurs
