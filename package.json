@@ -4,7 +4,8 @@
   "description": "Course on using Node.js to build a streaming service",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --runInBand"
+    "test-coverage": "jest --watchAll --verbose --runInBand --coverage",
+    "test": "jest --verbose --runInBand"
   },
   "repository": {
     "type": "git",

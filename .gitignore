@@ -3,3 +3,4 @@ node_modules/
 index99.js
 uncaughtExceptions.log
 logfile.log
+coverage/
