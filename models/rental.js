@@ -13,7 +13,7 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
       isGold: {
         type: Boolean,
         default: false
-      },
+        },
       phone: {
         type: String,
         required: true,
