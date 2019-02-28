@@ -1,6 +1,6 @@
 const winston = require('winston');
-const config = require('config')
 require('winston-mongodb');
+const config = require('config');
 require('express-async-errors');
 
 module.exports = function(){
@@ -19,8 +19,8 @@ winston.handleExceptions(
   //Logger for logfile.log
   winston.add(winston.transports.File,{filename: 'logfile.log'});
   //logger that logs in MongoDB, set to errors only.
-  winston.add(winston.transports.MongoDB,{
-    db: config.get('db'),
-    level: "error"
+  //winston.add(winston.transports.MongoDB,{
+  //db:config.get('db'),
+  // level: "error"
   });
 };
