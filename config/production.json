@@ -2,5 +2,6 @@
     "name":"My express app - production",
     "mail":{
         "host": "prod-mail-server"
-    }
+    },
+    "db": "mongodb://localhost/prod_vidly"
 }
