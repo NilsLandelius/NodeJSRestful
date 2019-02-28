@@ -22,5 +22,5 @@ winston.handleExceptions(
   //winston.add(winston.transports.MongoDB,{
   //db:config.get('db'),
   // level: "error"
-  });
+  //});
 };
